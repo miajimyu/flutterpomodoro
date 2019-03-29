@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Pomodoro Timer'),
+          backgroundColor: Colors.blueAccent,
         ),
         body: Page(),
       ),

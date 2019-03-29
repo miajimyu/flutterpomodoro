@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import 'dart:async';
 
-// final workTime = Duration(minutes: 25);
-// final shortBreakTime = Duration(minutes: 5);
-// final longBreakTime = Duration(minutes: 15);
+final workTime = Duration(minutes: 25);
+final shortBreakTime = Duration(minutes: 5);
+final longBreakTime = Duration(minutes: 15);
 final longBreakAfter = 3;
-final workTime = Duration(seconds: 5);
-final shortBreakTime = Duration(seconds: 2);
-final longBreakTime = Duration(seconds: 3);
+final targetInterval = 6;
 
 enum Status {
   work,
@@ -37,6 +36,7 @@ class _PageState extends State<Page> {
   Stopwatch _sw;
   Timer _timer;
   Duration _timeLeft = Duration();
+  Duration _newTimeLeft = Duration();
 
   Pomodoro _pomodoro = Pomodoro(
     targetTime: workTime,
@@ -48,7 +48,7 @@ class _PageState extends State<Page> {
   void initState() {
     _pomodoro.targetTime = workTime;
     _sw = Stopwatch();
-    _timer = Timer.periodic(Duration(milliseconds: 30), _callback);
+    _timer = Timer.periodic(Duration(milliseconds: 50), _callback);
     super.initState();
   }
 
@@ -60,8 +60,8 @@ class _PageState extends State<Page> {
   }
 
   void _callback(Timer timer) {
-    var _newTimeLeft = _pomodoro.targetTime - _sw.elapsed;
-    if (_newTimeLeft != _timeLeft) {
+    _newTimeLeft = _pomodoro.targetTime - _sw.elapsed;
+    if (_newTimeLeft.inSeconds != _timeLeft.inSeconds) {
       setState(() {
         _timeLeft = _newTimeLeft;
       });
@@ -106,10 +106,14 @@ class _PageState extends State<Page> {
     }
   }
 
-  String getTimeString() {
+  Widget displayTimeString() {
     String minutes = (_timeLeft.inMinutes % 60).toString().padLeft(2, '0');
     String seconds = (_timeLeft.inSeconds % 60).toString().padLeft(2, '0');
-    return ("$minutes:$seconds");
+
+    return Text(
+      "$minutes:$seconds",
+      style: TextStyle(fontSize: 90.0),
+    );
   }
 
   Widget displayPomodoroStatus() {
@@ -134,12 +138,15 @@ class _PageState extends State<Page> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         displayPomodoroStatus(),
-        Text(
-          getTimeString(),
-          style: TextStyle(fontSize: 100.0),
+        CircularPercentIndicator(
+          radius: 300.0,
+          lineWidth: 10.0,
+          percent: (_newTimeLeft.inSeconds / _pomodoro.targetTime.inSeconds),
+          center: displayTimeString(),
+          progressColor: Colors.blueAccent,
         ),
         Text(
-          _pomodoro.count.toString(),
+          "${_pomodoro.count.toString()}/$targetInterval",
           style: TextStyle(fontSize: 40.0),
         ),
         Row(
