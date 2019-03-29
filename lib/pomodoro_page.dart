@@ -41,7 +41,7 @@ class _PageState extends State<Page> {
   Pomodoro _pomodoro = Pomodoro(
     targetTime: workTime,
     status: Status.work,
-    count: 0,
+    count: 0
   );
 
   @override
@@ -60,16 +60,17 @@ class _PageState extends State<Page> {
   }
 
   void _callback(Timer timer) {
+    if (_sw.elapsed > _pomodoro.targetTime) {
+      setState(() {
+        _changeNextStatus();
+      });
+      return;
+    }
+
     _newTimeLeft = _pomodoro.targetTime - _sw.elapsed;
     if (_newTimeLeft.inSeconds != _timeLeft.inSeconds) {
       setState(() {
         _timeLeft = _newTimeLeft;
-      });
-    }
-
-    if (_sw.elapsed > _pomodoro.targetTime) {
-      setState(() {
-        _changeNextStatus();
       });
     }
   }
@@ -113,11 +114,7 @@ class _PageState extends State<Page> {
   Widget displayTimeString() {
     String minutes = (_timeLeft.inMinutes % 60).toString().padLeft(2, '0');
     String seconds = (_timeLeft.inSeconds % 60).toString().padLeft(2, '0');
-
-    return Text(
-      "$minutes:$seconds",
-      style: TextStyle(fontSize: 90.0),
-    );
+    return Text("$minutes:$seconds", style: TextStyle(fontSize: 90.0));
   }
 
   Widget displayPomodoroStatus() {
@@ -129,11 +126,15 @@ class _PageState extends State<Page> {
     } else {
       text = 'Work';
     }
+    return Text(text, style: TextStyle(fontSize: 30.0));
+  }
 
-    return Text(
-      text,
-      style: TextStyle(fontSize: 30.0),
-    );
+  Color getColors() {
+    if (_pomodoro.status == Status.work) {
+      return Colors.blueAccent;
+    } else {
+      return Colors.orange;
+    }
   }
 
   @override
@@ -147,7 +148,7 @@ class _PageState extends State<Page> {
           lineWidth: 10.0,
           percent: (_newTimeLeft.inSeconds / _pomodoro.targetTime.inSeconds),
           center: displayTimeString(),
-          progressColor: Colors.blueAccent,
+          progressColor: getColors(),
         ),
         Text(
           "${_pomodoro.count.toString()}/$targetInterval",
@@ -158,7 +159,7 @@ class _PageState extends State<Page> {
           children: <Widget>[
             Ink(
               decoration: ShapeDecoration(
-                color: Colors.blueAccent,
+                color: getColors(),
                 shape: CircleBorder(),
               ),
               child: IconButton(
@@ -170,7 +171,7 @@ class _PageState extends State<Page> {
             ),
             Ink(
               decoration: ShapeDecoration(
-                color: Colors.blueAccent,
+                color: getColors(),
                 shape: CircleBorder(),
               ),
               child: IconButton(
