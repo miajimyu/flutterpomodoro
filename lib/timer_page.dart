@@ -60,16 +60,6 @@ class _PageState extends State<Page> {
     }
   }
 
-  Widget buildFloatingButton(String text, VoidCallback callback) {
-    return FloatingActionButton(
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16.0, color: Colors.white),
-      ),
-      onPressed: callback,
-    );
-  }
-
   String getTimeString() {
     String minutes = (elapsed.inMinutes % 60).toString().padLeft(2, '0');
     String seconds = (elapsed.inSeconds % 60).toString().padLeft(2, '0');
@@ -88,9 +78,6 @@ class _PageState extends State<Page> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              buildFloatingButton('reset', _resetButtonPressed),
-              buildFloatingButton(
-                  _sw.isRunning ? 'stop' : 'start', _buttonPressed),
               Ink(
                 decoration: ShapeDecoration(
                   color: Colors.blueAccent,
