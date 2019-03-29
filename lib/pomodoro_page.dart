@@ -94,16 +94,20 @@ class _PageState extends State<Page> {
 
   void _resetButtonPressed() {
     if (!_sw.isRunning) {
-      _sw.reset();
+      setState(() {
+        _sw.reset();
+      });
     }
   }
 
   void _buttonPressed() {
-    if (_sw.isRunning) {
-      _sw.stop();
-    } else {
-      _sw.start();
-    }
+    setState(() {
+      if (_sw.isRunning) {
+        _sw.stop();
+      } else {
+        _sw.start();
+      }
+    });
   }
 
   Widget displayTimeString() {
