@@ -163,7 +163,7 @@ class _PageState extends State<Page> {
                 shape: CircleBorder(),
               ),
               child: IconButton(
-                icon: Icon(_sw.isRunning ? null : Icons.autorenew),
+                icon: Icon(_sw.isRunning ? null : Icons.refresh),
                 color: Colors.white,
                 iconSize: 72,
                 onPressed: () => _resetButtonPressed(),
