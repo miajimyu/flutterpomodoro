@@ -37,7 +37,6 @@ class _PageState extends State<Page> {
   Timer _timer;
   Duration _timeLeft = Duration();
   Duration _newTimeLeft = Duration();
-
   Pomodoro _pomodoro = Pomodoro(
     targetTime: workTime,
     status: Status.work,
