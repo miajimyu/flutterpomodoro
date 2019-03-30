@@ -1,12 +1,23 @@
 # flutterpomodoro
 
-Pomodoro timer by Flutter.
+Pomodoro Timer by Flutter.
 
-## Getting Started
+## Description
 
+This is simple pomodoro timer.
 
+The current status: displayed above the timer. Like "Work".
+Timer: This timer have three states.
+"Work" 25 minutes, "Short Break" 5 minutes and "Long Break" 15 minutes per 3 works.
+The current intervals: displayed below the timer. Like "0/6", "1/6".
+Left Button: Timer refresh. This button is enable when timer is not running.
+Right Button: Timer start / stop.
+
+The color of the button or indicator changes in each state.
 
 ## License
+
+### percent_indicator
 
 BSD 2-Clause License
 
