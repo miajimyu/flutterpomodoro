@@ -25,6 +25,11 @@ class Pomodoro {
     this.status,
     this.count,
   });
+
+  void setParam({Duration time, Status status}) {
+    this.targetTime = time;
+    this.status = status;
+  }
 }
 
 class Page extends StatefulWidget {
@@ -37,11 +42,8 @@ class _PageState extends State<Page> {
   Timer _timer;
   Duration _timeLeft = Duration();
   Duration _newTimeLeft = Duration();
-  Pomodoro _pomodoro = Pomodoro(
-    targetTime: workTime,
-    status: Status.work,
-    count: 0
-  );
+  Pomodoro _pomodoro =
+      Pomodoro(targetTime: workTime, status: Status.work, count: 0);
 
   @override
   void initState() {
@@ -80,15 +82,12 @@ class _PageState extends State<Page> {
     if (_pomodoro.status == Status.work) {
       _pomodoro.count++;
       if (_pomodoro.count % longBreakAfter == 0) {
-        _pomodoro.targetTime = longBreakTime;
-        _pomodoro.status = Status.longBreak;
+        _pomodoro.setParam(time: longBreakTime, status: Status.longBreak);
       } else {
-        _pomodoro.targetTime = shortBreakTime;
-        _pomodoro.status = Status.shortBreak;
+        _pomodoro.setParam(time: shortBreakTime, status: Status.shortBreak);
       }
     } else {
-      _pomodoro.targetTime = workTime;
-      _pomodoro.status = Status.work;
+      _pomodoro.setParam(time: workTime, status: Status.work);
     }
   }
 
@@ -118,21 +117,23 @@ class _PageState extends State<Page> {
 
   Widget displayPomodoroStatus() {
     String text;
-    if (_pomodoro.status == Status.shortBreak) {
-      text = 'Short Break';
-    } else if (_pomodoro.status == Status.longBreak) {
-      text = 'Long Break';
-    } else {
+    if (_pomodoro.status == Status.work) {
       text = 'Work';
+    } else if (_pomodoro.status == Status.shortBreak) {
+      text = 'Short Break';
+    } else {
+      text = 'Long Break';
     }
     return Text(text, style: TextStyle(fontSize: 30.0));
   }
 
-  Color getColors() {
+  Color _getColor() {
     if (_pomodoro.status == Status.work) {
-      return Colors.blueAccent;
-    } else {
+      return Colors.blue;
+    } else if (_pomodoro.status == Status.shortBreak) {
       return Colors.orange;
+    } else {
+      return Colors.red;
     }
   }
 
@@ -147,7 +148,7 @@ class _PageState extends State<Page> {
           lineWidth: 10.0,
           percent: (_newTimeLeft.inSeconds / _pomodoro.targetTime.inSeconds),
           center: displayTimeString(),
-          progressColor: getColors(),
+          progressColor: _getColor(),
         ),
         Text(
           "${_pomodoro.count.toString()}/$targetInterval",
@@ -158,7 +159,7 @@ class _PageState extends State<Page> {
           children: <Widget>[
             Ink(
               decoration: ShapeDecoration(
-                color: getColors(),
+                color: _getColor(),
                 shape: CircleBorder(),
               ),
               child: IconButton(
@@ -170,7 +171,7 @@ class _PageState extends State<Page> {
             ),
             Ink(
               decoration: ShapeDecoration(
-                color: getColors(),
+                color: _getColor(),
                 shape: CircleBorder(),
               ),
               child: IconButton(
