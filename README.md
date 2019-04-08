@@ -15,7 +15,7 @@ This is simple pomodoro timer.
 - Left Button: Timer refresh. This button is enable when timer is not running.  
 - Right Button: Timer start / stop.  
 
-The color of the button or indicator changes in each state.
+The color of the button and indicator changes in each state.
 
 ## Code size
 
