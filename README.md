@@ -2,7 +2,7 @@
 
 Pomodoro Timer by Flutter.
 
-![GIF](screenshots/flutterpomodoro.gif)
+<img src="screenshots/flutterpomodoro.gif" width="240px">
 
 ## Description
 
