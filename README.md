@@ -26,6 +26,6 @@ The color of the button and indicator changes in each state.
 
 ## License
 
-MIT.
+MIT
 
 This app is supported by [percent_indicator](https://pub.dartlang.org/packages/percent_indicator).
